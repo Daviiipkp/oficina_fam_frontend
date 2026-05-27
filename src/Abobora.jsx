@@ -19,17 +19,20 @@ function Abobora() {
       setStatus('error');
     };
 
-    eventSource.onmessage = (event) => {
+    eventSource.addEventListener("winner", (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.log("Dados do desafio recebidos:", data);
+        console.log("JSON recebido:", data);
         if (data.winner) {
           setWinner(data.winner);
+        } else {
+          setWinner(data); 
         }
       } catch (parseError) {
-        console.error("X Erro ao processar JSON do vencedor:", parseError, event.data);
+        console.log("String pura recebida:", event.data);
+        setWinner(event.data); 
       }
-    };
+    });
 
     return () => {
       console.log("■ Fechando conexão SSE.");
